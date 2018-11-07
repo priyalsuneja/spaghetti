@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
-
+//using Newtonsoft.json.dll;
 public class JSONParser {
 
-    class Result
+    public class Result
     {
         public int LevelNumber;
-        public int[][][] data;
+        public int[,,] data;
         public string id;
         public string[] variables;
+
+        // temp as JSON isn't working
+        public Result()
+        {
+            LevelNumber = 5;
+            data = new int[,,] { { { 1, 7, 0}, { 2, 7, 1}, { 3, 7, 3}, { 4, 7, 6}, { 5, 7, 10}, { 6, 7, 15}, { 7, 7, 21} }};
+            this.id = "hi";
+            this.variables = new string[] { "i", "n", "sum" };
+        }
+    }
+
+    public Result result;
+
+    public JSONParser()
+    {
+        this.result = new Result();
     }
 
     class Message
@@ -26,7 +41,7 @@ public class JSONParser {
         string json = 
             "{\"id\":2,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s - gauss_sum_true - unreach - call - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}";
 
-        Message m = JsonConvert.DeserializeObject<Message>(json);
+        //Message m = JsonConvert.DeserializeObject<Message>(json);
 
     }
 	
