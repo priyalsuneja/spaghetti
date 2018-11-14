@@ -15,6 +15,8 @@ public class FirstRow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        rowText.text = "lol";
 		
 	}
 
@@ -257,5 +259,6 @@ public class FirstRow : MonoBehaviour {
     {
         Calculation();
         rowText.text = x + "      " + y + "      " + n + "      " + a + "      " + b + " " + result;
+      
     }
 }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using Newtonsoft.json.dll;
+
+using Newtonsoft.Json;
 public class JSONParser {
 
     public class Result
     {
         public int LevelNumber;
-        public int[,,] data;
+        public int[,] data;
         public string id;
         public string[] variables;
 
@@ -16,7 +17,7 @@ public class JSONParser {
         public Result()
         {
             LevelNumber = 5;
-            data = new int[,,] { { { 1, 7, 0}, { 2, 7, 1}, { 3, 7, 3}, { 4, 7, 6}, { 5, 7, 10}, { 6, 7, 15}, { 7, 7, 21} }};
+            data = new int[,] { { 1, 7, 0}, { 2, 7, 1}, { 3, 7, 3}, { 4, 7, 6}, { 5, 7, 10}, { 6, 7, 15}, { 7, 7, 21} };
             this.id = "hi";
             this.variables = new string[] { "i", "n", "sum" };
         }
