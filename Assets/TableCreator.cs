@@ -28,9 +28,9 @@ public class TableCreator : MonoBehaviour {
         data = json.result.data;
         variables = json.result.variables;
         cols = variables.Length; // num of vars
-        Console.WriteLine("cols: " + cols);
-        rows = data.Length; // num of data points
-        Console.WriteLine("rows: " + rows);
+        //Console.WriteLine("cols: " + cols);
+        rows = data.Length / variables.Length; // num of data points
+        //Console.WriteLine("rows: " + rows);
         textArray = new GameObject[rows, cols];
 
         
@@ -50,7 +50,7 @@ public class TableCreator : MonoBehaviour {
                 myText.fontSize = 91;
                 myText.font = font;
                 myText.alignment = TextAnchor.MiddleCenter;
-                textArray[i, j].transform.position = new Vector3(startX + 850 + (xDiff * j), startY + 1300 - (yDiff * i), 0);
+                textArray[i, j].transform.position = new Vector3(startX + 800 + (xDiff * j), startY + 1300 - (yDiff * i), 0);
             }
         }
     }
