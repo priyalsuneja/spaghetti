@@ -465,13 +465,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88ebd39b2aadac946b2c3b65ddfe6a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 3
-  y: 4
-  n: 1
-  a: 2
-  b: 4
+  x: 0
+  y: 0
+  n: 0
+  a: 0
+  b: 0
   result: 
-  rowText: {fileID: 86641775}
+  rowText: {fileID: 0}
 --- !u!114 &86641778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,13 +574,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88ebd39b2aadac946b2c3b65ddfe6a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 6
-  y: 1
-  n: 1
-  a: 8
-  b: 4
+  x: 0
+  y: 0
+  n: 0
+  a: 0
+  b: 0
   result: 
-  rowText: {fileID: 196651453}
+  rowText: {fileID: 0}
 --- !u!1 &358272409
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'i       n      sum
+  m_Text: 'i          n        sum
 
 '
 --- !u!222 &358272412
@@ -814,13 +814,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88ebd39b2aadac946b2c3b65ddfe6a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 5
-  y: 2
-  n: 1
-  a: 5
-  b: 4
+  x: 0
+  y: 0
+  n: 0
+  a: 0
+  b: 0
   result: 
-  rowText: {fileID: 448286891}
+  rowText: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,8 +1020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded24f0c84eb1be4f8f4bc8a418c85f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 1000
-  scoreText: {fileID: 788499662}
+  score: 0
+  scoreText: {fileID: 0}
 --- !u!114 &788499662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1386,13 +1386,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88ebd39b2aadac946b2c3b65ddfe6a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 2
-  y: 5
-  n: 1
-  a: 1
-  b: 4
+  x: 0
+  y: 0
+  n: 0
+  a: 0
+  b: 0
   result: 
-  rowText: {fileID: 891408317}
+  rowText: {fileID: 0}
 --- !u!1 &1048930756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,8 +1763,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8373b24903407d641913e2aa2437addd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  healthText: {fileID: 1814491165}
+  health: 0
+  healthText: {fileID: 0}
 --- !u!114 &1814491165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1894,13 +1894,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88ebd39b2aadac946b2c3b65ddfe6a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 4
-  y: 3
-  n: 1
-  a: 3
-  b: 4
+  x: 0
+  y: 0
+  n: 0
+  a: 0
+  b: 0
   result: 
-  rowText: {fileID: 1825127055}
+  rowText: {fileID: 0}
 --- !u!1 &1995415530
 GameObject:
   m_ObjectHideFlags: 0
