@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TableCreator : MonoBehaviour {
 
-    int[,] data;
+    int[,,] data;
     string[] variables;
     int cols;
     int rows;
@@ -29,7 +29,7 @@ public class TableCreator : MonoBehaviour {
         variables = json.result.variables;
         cols = variables.Length; // num of vars
         Console.WriteLine("cols: " + cols);
-        rows = data.Length; // num of data points
+        rows = data.Length/variables.Length; // num of data points
         Console.WriteLine("rows: " + rows);
         textArray = new GameObject[rows, cols];
 
@@ -46,7 +46,7 @@ public class TableCreator : MonoBehaviour {
                 //newObj.GetComponent<RectTransform>().position = 
                 textArray[i, j] = newObj;
                 Text myText = newObj.AddComponent<Text>();
-                myText.text = i + ", " + j;
+                myText.text = i + ", " + i;
                 myText.fontSize = 91;
                 myText.font = font;
                 myText.alignment = TextAnchor.MiddleCenter;
