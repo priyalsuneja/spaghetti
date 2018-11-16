@@ -9,7 +9,7 @@ public class JSONParser {
     public class Result
     {
         public int LevelNumber;
-        public int[,,] data;
+        public int[][][] data;
         public string id;
         public string[] variables;
 
