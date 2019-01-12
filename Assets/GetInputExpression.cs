@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Script_Engine;
 
 public class GetInputExpression : MonoBehaviour
 {
-    public static ScriptEngine Engine = new ScriptEngine(ScriptEngine.Languages.CSharp);
-    public string exp;
+    public static string exp;
     public static bool isExpression = false;
     public static bool isBool = false;
     public static List<string> parsed;
@@ -21,16 +19,6 @@ public class GetInputExpression : MonoBehaviour
         if (exp.Length == 0)
         {
             return;
-        }
-        Engine.Code = exp;
-        if (Engine.Compile())
-        {
-            isExpression = true;
-        }
-        else
-        {
-            Debug.Log(Engine.Messages[0]);
-            isExpression = false;
         }
         //Debug.Log(exp);
         //for (int x = 0; x < exp.Length; x++)//determine if it is a valid expression
