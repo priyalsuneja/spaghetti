@@ -9,13 +9,14 @@ public class FirstRow : MonoBehaviour {
     public int n;
     public int a;
     public int b;
+    public int expCount;
     public string result = "";
 
     public Text rowText;
 
 	// Use this for initialization
 	void Start () {
-		
+        expCount = 0;	
 	}
     void Calculation()
     {
@@ -255,5 +256,17 @@ public class FirstRow : MonoBehaviour {
 	void Update () {
         Calculation();
         rowText.text = x + "      " + y + "      " + n + "      " + a + "      " + b + " "+result;
+
+        if(result == "True")
+        {
+            expCount++;
+            if( expCount == 3)
+            {
+                expCount = 0;
+                TableCreator.Start();
+            }
+        }
+
+        
     }
 }

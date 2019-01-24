@@ -22,6 +22,7 @@ public class TableCreator : MonoBehaviour
     float yDiff = 175;
     float xDiff = 300;
     float varY = -426;
+    int level = 1;
 
     Color variableColor;
     public GameObject[,] textArray;
@@ -30,7 +31,16 @@ public class TableCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        JSONParser json = new JSONParser();
+        JSONParser json;
+        if ( level == 1) {
+            json = new JSONParser();
+            level = 2;
+        } else
+        {
+            json = new JSONParser("{ \"id\":2, \"jsonrpc\":\"2.0\", \"result\":{ \"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s-gauss_sum_true-unreach-call-auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}");
+            level = 1;
+        }
+        
         data = json.result.data;
         variables = json.result.variables;
         cols = variables.Length + 1; // num of vars, also data[0][0].Length
