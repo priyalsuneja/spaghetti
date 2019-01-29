@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Jint;
 
@@ -38,26 +39,6 @@ public class TableCreator : MonoBehaviour
         rows = data[0].Length; // num of data points
         //Console.WriteLine("rows: " + rows);
         textArray = new GameObject[rows, cols];
-
-        // creating variable text display
-        /*variableText = new GameObject();
-        variableText.transform.SetParent(canvas.transform);
-        variableText.name = "Variable Text";
-        variableText.AddComponent<RectTransform>();
-        variableText.AddComponent<Text>();
-        variableText.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-        variableColor = new Color(247, 123, 85, 255);
-        variableText.GetComponent<Text>().color = variableColor;
-        variableText.GetComponent<RectTransform>().sizeDelta = new Vector2(1133, 175);
-        variableText.transform.position = new Vector3(-153 + 720 + 112, 426 + 370 + 1280, 0);
-        for (int i = 0; i < variables.Length; i++)
-        {
-            variableText.GetComponent<Text>().text += variables[i] + "     ";
-        }
-        variableText.GetComponent<Text>().text += "result";
-        variableText.GetComponent<Text>().font = font;
-        variableText.GetComponent<Text>().fontSize = 91;
-        */
         variableColor = new Color(247, 123, 85, 255);
 
         for (int i = 0; i < variables.Length; i++)
@@ -117,7 +98,7 @@ public class TableCreator : MonoBehaviour
                     }
                     try
                     {
-                        Debug.Log(GetInputExpression.exp);
+                        //Debug.Log(GetInputExpression.exp);
                         engine.Execute(GetInputExpression.exp);
 
                         myText.text = engine.GetCompletionValue().ToObject().ToString();
@@ -143,14 +124,6 @@ public class TableCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*for( int i = 0; i < rows; i++)
-        {
-            for( int j = 0; j < cols; j++)
-            {
-                //[i, j].alignment = TextAnchor.MiddleCenter;
-                textArray[i, j].text = data[i, j] + "";
-            }
-        }*/
         for (int i = 0; i < rows; i++)
         {
             var engine = new Engine();
@@ -158,15 +131,13 @@ public class TableCreator : MonoBehaviour
             for (int k = 0; k < cols - 1; k++)
 
             {
-
                 engine.SetValue(variables[k], data[0][i][k]);
-
             }
             try
             {
-                Debug.Log(GetInputExpression.exp);
+                //Debug.Log(GetInputExpression.exp);
                 engine.Execute(GetInputExpression.exp);
-                Debug.Log(engine.GetCompletionValue().ToObject());
+                //Debug.Log(engine.GetCompletionValue().ToObject());
                 textArray[i, cols - 1].GetComponent<Text>().text = engine.GetCompletionValue().ToObject().ToString();
             }
             catch (Exception err)
