@@ -17,10 +17,17 @@ public class JSONParser {
 
     public Result result;
 
+    public JSONParser(string s)
+    {
+        string json = s;
+        Message m = JsonConvert.DeserializeObject<Message>(json);
+        this.result = m.result;
+    }
+
+    //overloaded constructor
     public JSONParser()
     {
-        string json =
-            "{\"id\":2,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s - gauss_sum_true - unreach - call - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}";
+        string json = "{\"id\":2,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s - gauss_sum_true - unreach - call - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}";
         Message m = JsonConvert.DeserializeObject<Message>(json);
         this.result = m.result;
     }
@@ -33,8 +40,8 @@ public class JSONParser {
     }
 
 	// Use this for initialization
-	void Start () {    
-
+	void Start () {
+        
     }
 	
 }
