@@ -7,10 +7,8 @@ using UnityEngine.UI;
 using Jint;
 
 
-public class TableCreator : MonoBehaviour
+public class TableCreator1 : MonoBehaviour
 {
-    JSONParser json;
-    public static int counter = 0;
 
     int[][][] data;
     string[] variables;
@@ -29,89 +27,28 @@ public class TableCreator : MonoBehaviour
 
     Color variableColor;
     public static GameObject[,] textArray;
-    public static GameObject[,] varArray;
     GameObject variableText;
 
     // Use this for initialization
     void Start()
     {
-        json = new JSONParser("{ \"id\":2, \"jsonrpc\":\"2.0\", \"result\":{ \"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s-gauss_sum_true-unreach-call-auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}");
-        LoadTable(json);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log("Counter from Table: " +counter);
-        if (counter == 3) {
-            if (level == 1)
-            {
-                json = new JSONParser("{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}");
-                ClearTable();
-                LoadTable(json);
-                level = 2;
-            }
-            else
-            {
-                json = new JSONParser("{ \"id\":2, \"jsonrpc\":\"2.0\", \"result\":{ \"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s-gauss_sum_true-unreach-call-auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}");
-                ClearTable();
-                LoadTable(json);
-                level = 1;
-            }
-            counter = 0;
-        }
-
-        for (int i = 0; i < rows; i++)
+        JSONParser json;
+        if ( level == 1) {
+            json = new JSONParser();
+            level = 2;
+        } else
         {
-            var engine = new Engine();
-
-            for (int k = 0; k < cols - 1; k++)
-
-            {
-                engine.SetValue(variables[k], data[0][i][k]);
-            }
-            try
-            {
-                if (GetInputExpression.exp.Length == 0)
-                {
-                    textArray[i, cols - 1].GetComponent<Text>().text = "";
-                }
-                else
-                {
-                    //Debug.Log(GetInputExpression.exp);
-                    engine.Execute(GetInputExpression.exp);
-                    //Debug.Log(engine.GetCompletionValue().ToObject());
-                    textArray[i, cols - 1].GetComponent<Text>().text = engine.GetCompletionValue().ToObject().ToString();
-                }
-            }
-            catch (Exception err)
-            {
-                Debug.Log(err.Message);
-            }
+            json = new JSONParser("{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}");
+            level = 1;
         }
-    }
-
-    void ClearTable()
-    {
-        for (int i = 0; i < variables.Length + 1; i++)
-        {
-            Destroy(varArray[0, i]);
-        }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Destroy(textArray[i, j]);
-            }
-        }
-    }
-
-    void LoadTable(JSONParser json)
-    {
+        
         data = json.result.data;
         variables = json.result.variables;
         cols = variables.Length + 1; // num of vars, also data[0][0].Length
+        //Console.WriteLine("cols: " + cols);
         rows = data[0].Length; // num of data points
+        //Console.WriteLine("rows: " + rows);
         textArray = new GameObject[rows, cols];
-        varArray = new GameObject[1, cols];
         variableColor = new Color(247, 123, 85, 255);
 
         for (int i = 0; i < variables.Length; i++)
@@ -122,7 +59,6 @@ public class TableCreator : MonoBehaviour
             newObj.AddComponent<RectTransform>();
             newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
             textArray[0, i] = newObj;
-            varArray[0, i] = newObj;
             Text myText = newObj.AddComponent<Text>();
             myText.text = variables[i];
             myText.fontSize = 91;
@@ -139,7 +75,6 @@ public class TableCreator : MonoBehaviour
         obj.AddComponent<RectTransform>();
         obj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
         textArray[0, variables.Length] = obj;
-        varArray[0, variables.Length] = obj;
         Text text = obj.AddComponent<Text>();
         text.text = "result";
         text.fontSize = 91;
@@ -192,6 +127,39 @@ public class TableCreator : MonoBehaviour
                 myText.font = font;
                 myText.alignment = TextAnchor.MiddleCenter;
                 textArray[i, j].transform.position = new Vector3(startX + (xDiff * j), startY - (yDiff * i), 0);
+            }
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            var engine = new Engine();
+
+            for (int k = 0; k < cols - 1; k++)
+
+            {
+                engine.SetValue(variables[k], data[0][i][k]);
+            }
+            try
+            {
+                if (GetInputExpression.exp.Length == 0)
+                {
+                    textArray[i, cols - 1].GetComponent<Text>().text = "";
+                }
+                else
+                {
+                    //Debug.Log(GetInputExpression.exp);
+                    engine.Execute(GetInputExpression.exp);
+                    //Debug.Log(engine.GetCompletionValue().ToObject());
+                    textArray[i, cols - 1].GetComponent<Text>().text = engine.GetCompletionValue().ToObject().ToString();
+                }
+            }
+            catch (Exception err)
+            {
+                Debug.Log(err.Message);
             }
         }
     }

@@ -14,7 +14,5 @@ public class InputFieldDisplay : MonoBehaviour {
 	void Update () {
         
         gameObject.GetComponent<InputField>().text = GetInputExpression.exp;
-        //Debug.Log("GetInputExpression.exp is " + GetInputExpression.exp);
-        //Debug.Log("etComponent<Text>().text is " + gameObject.GetComponent<Text>().text);
     }
 }
