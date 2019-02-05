@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class BackspaceScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void Backspace()
     {
         if (GetInputExpression.exp.Length > 0)
@@ -26,9 +16,5 @@ public class BackspaceScript : MonoBehaviour {
     {
         GetInputExpression.exp = "";
     }
-
-    public void Enter()
-    {
-        
-    }
+    
 }

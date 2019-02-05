@@ -7,15 +7,5 @@ public class buttonAppend : MonoBehaviour {
     public static void ButtonTrigger()
     {
         GetInputExpression.exp += EventSystem.current.currentSelectedGameObject.name;
-        
     }
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

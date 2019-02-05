@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnterScript : MonoBehaviour {
-    public void enter()
+    public void Enter()
     {
         Debug.Log("Entered");
         for(int i = 0; i < TableCreator.rows; i++)
@@ -19,13 +19,4 @@ public class EnterScript : MonoBehaviour {
         TableCreator.score++;
         Debug.Log(TableCreator.counter);
     }
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
