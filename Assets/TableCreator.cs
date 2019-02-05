@@ -13,7 +13,6 @@ public class TableCreator : MonoBehaviour
     JSONParser json;
     public static int counter = 0;
     public static int score = 0;
-    public static int level = 1;
 
     int[][][] data;
     string[] variables;
@@ -33,20 +32,12 @@ public class TableCreator : MonoBehaviour
     public static GameObject[,] textArray;
     public static GameObject[,] varArray;
     GameObject variableText;
-
+    public static string currentJson = "{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}";
     // Use this for initialization
     void Start()
-    {
-        if (level == 1)
-        {
-            json = new JSONParser("{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}");
+    { 
+            json = new JSONParser(currentJson);
             LoadTable(json);
-        }
-        else
-        {
-            json = new JSONParser("{ \"id\":2, \"jsonrpc\":\"2.0\", \"result\":{ \"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s-gauss_sum_true-unreach-call-auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}");
-            LoadTable(json);
-        }
     }
 
     // Update is called once per frame
@@ -56,7 +47,7 @@ public class TableCreator : MonoBehaviour
         if (counter == 3) {
             
             
-            ClearTable();
+            //ClearTable();
             displayScore();
 
         }
