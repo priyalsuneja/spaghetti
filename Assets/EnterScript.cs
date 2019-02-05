@@ -16,6 +16,7 @@ public class EnterScript : MonoBehaviour {
             }
         }
         TableCreator.counter++;
+        TableCreator.score++;
         Debug.Log(TableCreator.counter);
     }
     // Use this for initialization

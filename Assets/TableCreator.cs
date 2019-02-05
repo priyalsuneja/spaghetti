@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Jint;
+using UnityEngine.SceneManagement;
 
 
 public class TableCreator : MonoBehaviour
 {
     JSONParser json;
     public static int counter = 0;
+    public static int score = 0;
 
     int[][][] data;
     string[] variables;
@@ -44,21 +46,26 @@ public class TableCreator : MonoBehaviour
     {
         //Debug.Log("Counter from Table: " +counter);
         if (counter == 3) {
+            
+            
+            ClearTable();
+            displayScore();
+
             if (level == 1)
             {
                 json = new JSONParser("{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}");
-                ClearTable();
                 LoadTable(json);
                 level = 2;
             }
             else
             {
                 json = new JSONParser("{ \"id\":2, \"jsonrpc\":\"2.0\", \"result\":{ \"LevelNumber\":5,\"data\":[[[1,7,0],[2,7,1],[3,7,3],[4,7,6],[5,7,10],[6,7,15],[7,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"s-gauss_sum_true-unreach-call-auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"n\":\"int\",\"sum\":\"int\"},\"variables\":[\"i\",\"n\",\"sum\"]}}");
-                ClearTable();
                 LoadTable(json);
                 level = 1;
             }
             counter = 0;
+            score = 0;
+
         }
 
         for (int i = 0; i < rows; i++)
@@ -89,6 +96,11 @@ public class TableCreator : MonoBehaviour
                 Debug.Log(err.Message);
             }
         }
+    }
+
+    void displayScore()
+    {
+        SceneManager.LoadScene("DisplayScore");
     }
 
     void ClearTable()
