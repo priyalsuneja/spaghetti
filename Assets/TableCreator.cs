@@ -114,6 +114,7 @@ public class TableCreator : MonoBehaviour
         varArray = new GameObject[1, cols];
         variableColor = new Color(247, 123, 85, 255);
 
+        // making variables and variable buttons
         for (int i = 0; i < variables.Length; i++)
         {
             GameObject newObj = new GameObject();
@@ -121,6 +122,8 @@ public class TableCreator : MonoBehaviour
             newObj.name = variables[i];
             newObj.AddComponent<RectTransform>();
             newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
+            Button varButton = newObj.AddComponent<Button>();
+            varButton.onClick.AddListener(buttonAppend.ButtonTrigger);
             textArray[0, i] = newObj;
             varArray[0, i] = newObj;
             Text myText = newObj.AddComponent<Text>();

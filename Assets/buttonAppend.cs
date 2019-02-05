@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class buttonAppend : MonoBehaviour {
-    public void ButtonTrigger()
+    public static void ButtonTrigger()
     {
         GetInputExpression.exp += EventSystem.current.currentSelectedGameObject.name;
         
