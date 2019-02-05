@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class NextLevel : MonoBehaviour
 {
-    public void NextScene()
+    public void ChangeLevel()
     {
-        SceneManager.LoadScene("Level2");
+        SceneManager.LoadScene("SampleScene");
     }
 }
