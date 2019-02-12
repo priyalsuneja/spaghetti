@@ -6,14 +6,21 @@ public class BackspaceScript : MonoBehaviour {
 
     public void Backspace()
     {
-        if (GetInputExpression.exp.Length > 0)
+        if (GetInputExpression.numbers.Count >0)
         {
-            GetInputExpression.exp = GetInputExpression.exp.Substring(0, GetInputExpression.exp.Length - 1);
+            GetInputExpression.numbers.RemoveLast();
+            GetInputExpression.exp = "";
+            foreach( string s in GetInputExpression.numbers)
+            {
+                GetInputExpression.exp += s;
+            }
+            
         }
     }
 
     public void Clear()
     {
+        GetInputExpression.numbers.Clear();
         GetInputExpression.exp = "";
     }
     

@@ -9,6 +9,7 @@ public class GetInputExpression : MonoBehaviour
     public static bool isExpression = false;
     public static bool isBool = false;
     public static List<string> parsed;
+    public static LinkedList<string> numbers = new LinkedList<string>();
     //Note, currently it may run into bug if there is a space separating the numbers.
     public void GetExpression(string expression)
     {
