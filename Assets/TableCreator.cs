@@ -130,8 +130,8 @@ public class TableCreator : MonoBehaviour
         startY = panel.GetComponent<RectTransform>().rect.height;
         panel.name = "Table Panel";
         panel.transform.position = canvas.GetComponent<RectTransform>().position;
-        //float scale = parentCanvas.GetComponent<RectTransform>().rect.width / canvas.GetComponent<RectTransform>().rect.width;
-        //canvas.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+        float scale = parentCanvas.GetComponent<RectTransform>().rect.width / panel.GetComponent<RectTransform>().rect.width;
+        panel.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
         // making variables and variable buttons
         for (int i = 0; i < variables.Length; i++)
         {
