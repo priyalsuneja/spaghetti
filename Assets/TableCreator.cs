@@ -27,6 +27,8 @@ public class TableCreator : MonoBehaviour
     float yDiff = 175;
     float xDiff = 300;
     float varY = -426;
+    public GameObject parentCanvas;
+    public GameObject panel;
 
     Color variableColor;
     public static GameObject[,] textArray;
@@ -102,6 +104,9 @@ public class TableCreator : MonoBehaviour
 
     void LoadTable(JSONParser json)
     {
+        canvas = new GameObject();
+        canvas.AddComponent<RectTransform>();
+        canvas.name = "Table Canvas";
         data = json.result.data;
         variables = json.result.variables;
         cols = variables.Length + 1; // num of vars, also data[0][0].Length
@@ -109,12 +114,29 @@ public class TableCreator : MonoBehaviour
         textArray = new GameObject[rows, cols];
         varArray = new GameObject[1, cols];
         variableColor = new Color(247, 123, 85, 255);
-
+        canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(startX * 2 + xDiff * (cols + 1), yDiff * rows);
+        canvas.AddComponent<Canvas>();
+        canvas.AddComponent<CanvasScaler>();
+        canvas.AddComponent<GraphicRaycaster>();
+        canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        panel = new GameObject();
+        panel.transform.SetParent(canvas.transform);
+        panel.AddComponent<RectTransform>();
+        float xDelta = startX + (xDiff * (cols)) / 2;
+        Debug.Log("X" + xDelta);
+        float yDelta = (yDiff * (rows + 1)) / 2;
+        Debug.Log("Y" + yDelta);
+        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(xDelta*2, yDelta*2);
+        startY = panel.GetComponent<RectTransform>().rect.height;
+        panel.name = "Table Panel";
+        panel.transform.position = canvas.GetComponent<RectTransform>().position;
+        //float scale = parentCanvas.GetComponent<RectTransform>().rect.width / canvas.GetComponent<RectTransform>().rect.width;
+        //canvas.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
         // making variables and variable buttons
         for (int i = 0; i < variables.Length; i++)
         {
             GameObject newObj = new GameObject();
-            newObj.transform.SetParent(canvas.transform);
+            newObj.transform.SetParent(panel.transform);
             newObj.name = variables[i];
             newObj.AddComponent<RectTransform>();
             newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
@@ -128,12 +150,12 @@ public class TableCreator : MonoBehaviour
             myText.font = font;
             myText.alignment = TextAnchor.MiddleCenter;
             myText.color = Color.gray;//variableColor;
-            textArray[0, i].transform.position = new Vector3(startX + (xDiff * i), startY + yDiff, 0);
+            textArray[0, i].transform.localPosition = new Vector3(startX + (xDiff * i)-xDelta, startY + yDiff-yDelta, 0);
         }
 
         // results
         GameObject obj = new GameObject();
-        obj.transform.SetParent(canvas.transform);
+        obj.transform.SetParent(panel.transform);
         obj.name = "result";
         obj.AddComponent<RectTransform>();
         obj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
@@ -145,7 +167,7 @@ public class TableCreator : MonoBehaviour
         text.font = font;
         text.color = Color.gray;// variableColor;
         text.alignment = TextAnchor.MiddleCenter;
-        textArray[0, variables.Length].transform.position = new Vector3(startX + (xDiff * variables.Length), startY + yDiff, 0);
+        textArray[0, variables.Length].transform.localPosition = new Vector3(startX + (xDiff * variables.Length)-xDelta, startY + yDiff-yDelta, 0);
 
         // creating table
         for (int i = 0; i < rows; i++)
@@ -153,7 +175,7 @@ public class TableCreator : MonoBehaviour
             for (int j = 0; j < cols; j++)
             {
                 GameObject newObj = new GameObject();
-                newObj.transform.SetParent(canvas.transform);
+                newObj.transform.SetParent(panel.transform);
                 newObj.name = "(" + i + ", " + j + ")";
                 newObj.AddComponent<RectTransform>();
                 newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
@@ -190,8 +212,10 @@ public class TableCreator : MonoBehaviour
                 myText.fontSize = 91;
                 myText.font = font;
                 myText.alignment = TextAnchor.MiddleCenter;
-                textArray[i, j].transform.position = new Vector3(startX + (xDiff * j), startY - (yDiff * i), 0);
+                textArray[i, j].transform.localPosition = new Vector3(startX + (xDiff * j)-xDelta, startY - (yDiff * i)-yDelta, 0);
             }
         }
+        canvas.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvas.GetComponent<CanvasScaler>().referenceResolution = new Vector2(1440, 2560);
     }
 }

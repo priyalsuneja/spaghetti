@@ -8,4 +8,9 @@ public class buttonAppend : MonoBehaviour {
     {
         GetInputExpression.exp += EventSystem.current.currentSelectedGameObject.name;
     }
+    public void buttonTrigger()
+    {
+        GetInputExpression.exp += EventSystem.current.currentSelectedGameObject.name;
+    }
 }
+

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnterScript : MonoBehaviour {
+    public GameObject panel;
+    public GameObject text;
     public void Enter()
     {
         Debug.Log("Entered");
@@ -17,6 +19,9 @@ public class EnterScript : MonoBehaviour {
         }
         TableCreator.counter++;
         TableCreator.score++;
+        text = panel.transform.Find("Text (1)").gameObject;
+        text.GetComponent<Text>().text += GetInputExpression.exp + '\n';
         Debug.Log(TableCreator.counter);
     }
 }
+
