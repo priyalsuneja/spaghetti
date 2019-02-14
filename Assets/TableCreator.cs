@@ -34,12 +34,13 @@ public class TableCreator : MonoBehaviour
     public static GameObject[,] textArray;
     public static GameObject[,] varArray;
     GameObject variableText;
-    public static string currentJson = "{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}";
+    public static string currentJson; //= "{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}";
     // Use this for initialization
     void Start()
-    { 
-            json = new JSONParser(currentJson);
-            LoadTable(json);
+    {
+        currentJson = CallServer.ExecuteServerCall();
+        json = new JSONParser(currentJson);
+        LoadTable(json);
     }
 
     // Update is called once per frame
@@ -68,6 +69,7 @@ public class TableCreator : MonoBehaviour
                 if (GetInputExpression.exp.Length == 0)
                 {
                     textArray[i, cols - 1].GetComponent<Text>().text = "";
+                    //numbers.Clear();
                 }
                 else
                 {
@@ -79,7 +81,7 @@ public class TableCreator : MonoBehaviour
             }
             catch (Exception err)
             {
-                Debug.Log(err.Message);
+             //  Debug.Log(err.Message);
             }
         }
     }
@@ -123,9 +125,9 @@ public class TableCreator : MonoBehaviour
         panel.transform.SetParent(canvas.transform);
         panel.AddComponent<RectTransform>();
         float xDelta = startX + (xDiff * (cols)) / 2;
-        Debug.Log("X" + xDelta);
+        //Debug.Log("X" + xDelta);
         float yDelta = (yDiff * (rows + 1)) / 2;
-        Debug.Log("Y" + yDelta);
+       //Debug.Log("Y" + yDelta);
         panel.GetComponent<RectTransform>().sizeDelta = new Vector2(xDelta*2, yDelta*2);
         startY = panel.GetComponent<RectTransform>().rect.height;
         panel.name = "Table Panel";
