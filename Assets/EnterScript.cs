@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Jint;
 
 public class EnterScript : MonoBehaviour {
     public GameObject panel;
@@ -21,6 +22,7 @@ public class EnterScript : MonoBehaviour {
         TableCreator.score++;
         text = panel.transform.Find("Text (1)").gameObject;
         text.GetComponent<Text>().text += GetInputExpression.exp + '\n';
+        CallServer.ast = new Engine().Json.Parse(GetInputExpression.exp, null).ToString();
         Debug.Log(TableCreator.counter);
     }
 }

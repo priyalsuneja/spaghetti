@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CallServer : MonoBehaviour
 {
+    public static string ast;
 
     // Use this for initialization
     void Start()
@@ -69,6 +70,44 @@ public class CallServer : MonoBehaviour
             Debug.Log("-----------------");
             Debug.Log(e.Message);
             return "";
+        }
+    }
+
+
+    // I DONT KNOW HOW TO CALL IT 
+    public static void IsTautology()
+    {
+        try
+        {
+            //Creates the HTTP request
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            //Get the proper JSON string for the request (every time you call this method it will ask for the next level)
+            string reqData = requestLevelJSON(requestedLevel++);
+            request.ContentLength = reqData.Length;
+            //This cookie simulated having logged in with facebook. If you really logged in the web browser would set the FBID to the facebook ID of the user
+            CookieContainer cookies = new CookieContainer(1);
+            cookies.Add(new Cookie("FBID", "Anonymous", "/api", "invgame.azurewebsites.net"));
+            request.CookieContainer = cookies;
+            //Write the request string to the network (basically sends the request to the server)
+            StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
+            requestWriter.Write(reqData);
+            requestWriter.Close();
+
+            //Read the response from the server (by simulating the Facebook login with the cooke we should not get errors
+            WebResponse webResponse = request.GetResponse();
+            Stream webStream = webResponse.GetResponseStream();
+            StreamReader responseReader = new StreamReader(webStream);
+            //Read the response body (a JSON string) to the response string. This is the string to parse for the level
+            string response = responseReader.ReadToEnd();
+            //Debug.Log(response);
+            responseReader.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("-----------------");
+            Debug.Log(e.Message);
         }
     }
 }
