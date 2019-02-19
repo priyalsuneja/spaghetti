@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class DisplayScoreVar : MonoBehaviour {
 
+    public Font enteredFont;
+
     public void displayScoreVariable()
     {
-        gameObject.GetComponent < Text >().text = "Current Score: " + TableCreator.score.ToString();
+        gameObject.GetComponent<Text>().font = enteredFont;
+        gameObject.GetComponent < Text >().text = "CURRENT SCORE: " + TableCreator.score.ToString();
     }
 	// Use this for initialization
 	void Start () {

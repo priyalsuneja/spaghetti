@@ -165,7 +165,7 @@ public class TableCreator : MonoBehaviour
         varArray[0, variables.Length] = obj;
         Text text = obj.AddComponent<Text>();
         text.text = "result";
-        text.fontSize = 91;
+        text.fontSize = 85;
         text.font = font;
         text.color = Color.gray;// variableColor;
         text.alignment = TextAnchor.MiddleCenter;

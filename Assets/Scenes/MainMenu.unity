@@ -443,7 +443,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SPAGHETTI
+  m_Text: INVARIANCE
 --- !u!222 &739227264
 CanvasRenderer:
   m_ObjectHideFlags: 0
