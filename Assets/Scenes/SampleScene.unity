@@ -5085,7 +5085,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 379918707}
-        m_MethodName: ButtonTrigger
+        m_MethodName: buttonTrigger
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
