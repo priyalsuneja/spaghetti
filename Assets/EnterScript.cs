@@ -22,8 +22,13 @@ public class EnterScript : MonoBehaviour {
         TableCreator.score++;
         text = panel.transform.Find("Text (1)").gameObject;
         text.GetComponent<Text>().text += GetInputExpression.exp + '\n';
-        CallServer.ast = new Engine().Json.Parse(GetInputExpression.exp, null).ToString();
-        Debug.Log(TableCreator.counter);
+        var parser = new Jint.Parser.JavaScriptParser();
+        var program = parser.Parse("j<5", new Jint.Parser.ParserOptions { Tokens = true });
+        var s = program.Body.ToString();
+        Debug.Log(s);
+        Debug.Log(program.ToString());
+            //new Engine()..Json.Parse(GetInputExpression.exp, null).ToString();
+        //Debug.Log(TableCreator.counter);
     }
 }
 
