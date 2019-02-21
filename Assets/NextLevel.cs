@@ -20,4 +20,9 @@ public class NextLevel : MonoBehaviour
         TableCreator.score = 0;
         SceneManager.LoadScene("SampleScene");
     }
+
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
