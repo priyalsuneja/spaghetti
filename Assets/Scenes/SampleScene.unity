@@ -1101,6 +1101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 796748931}
   text: {fileID: 489133606}
+  tableCreator: {fileID: 1941720961}
 --- !u!114 &379918711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4185,10 +4186,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15873178a7e7854e8bbdde8849be331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cols: 0
+  rows: 0
   canvas: {fileID: 1158879890}
   font: {fileID: 12800000, guid: c739003f962aba54d9547be8bb63f4fe, type: 3}
   parentCanvas: {fileID: 0}
   panel: {fileID: 0}
+  variableJSON: 
 --- !u!1 &1228587269
 GameObject:
   m_ObjectHideFlags: 0
@@ -6954,10 +6958,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15873178a7e7854e8bbdde8849be331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cols: 0
+  rows: 0
   canvas: {fileID: 1158879890}
   font: {fileID: 12800000, guid: c739003f962aba54d9547be8bb63f4fe, type: 3}
   parentCanvas: {fileID: 1158879890}
   panel: {fileID: 0}
+  variableJSON: 
 --- !u!1 &1995415530
 GameObject:
   m_ObjectHideFlags: 0

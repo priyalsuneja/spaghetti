@@ -12,7 +12,6 @@ public class JSONParser {
         public int[][][] data;
         public string id;
         public string[] variables;
-
     }
 
     public Result result;

@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class CallServer : MonoBehaviour
 {
+    
     // Use this for initialization
     void Start()
     {
@@ -19,6 +20,8 @@ public class CallServer : MonoBehaviour
     private const string URL = "https://invgame.azurewebsites.net/api";
     private const string REQ_LEVEL_DATA =
         "{{\"jsonrpc\":\"2.0\",\"method\":\"App.loadNextLvlAnonymous\",\"params\":[\"Anonymous\",[\"Anonymous\",null,\"facebook\"],{0}, false],\"id\":{1}}}";
+    private const string REQ_TAUTOLOGY_DATA =
+        "{{\"jsonrpc\":\"2.0\",\"method\":\"App.isTautology\",\"params\":[{0},{1},[\"Anonymous\",null,\"facebook\"]],\"id\":{2}}}";
     private static int requestCounter = 0;
     //Start request from level 1 (there are 62 levels in the server. When asked for an higher level the result will be null
     private static int requestedLevel = 1;
@@ -27,6 +30,11 @@ public class CallServer : MonoBehaviour
     {
         return string.Format(REQ_LEVEL_DATA, level, requestCounter++);
     }
+    private static string requestTautologyJSON(string insertJSON, string variablesJSON)
+    {
+        return string.Format(REQ_TAUTOLOGY_DATA, insertJSON, variablesJSON, requestCounter++);
+    }
+    
     //Function that call the server (you may want to change it to return the json string received instead to output it to the debug log
     public static string ExecuteServerCall()
     {
@@ -64,7 +72,49 @@ public class CallServer : MonoBehaviour
             return "";
         }
     }
-    public static string Sim(String exp)
+
+    /*
+     * should look like : {"jsonrpc":"2.0","method":"App.isTautology","params":[{"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"BinaryExpression","operator":"==","left":{"type":"Literal","value":1,"raw":"1"},"right":{"type":"Literal","value":1,"raw":"1"}}}],"sourceType":"script"},{"n":"int","x":"int","y":"int"},["2211846132386603",null,"facebook"]],"id":8}
+     */
+    //Function that call the server (you may want to change it to return the json string received instead to output it to the debug log
+    public static string CallServerOnTautology(string responseJSON, string variableJSON)
+    {
+        try
+        {
+            //Creates the HTTP request
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            //Get the proper JSON string for the request (every time you call this method it will ask for the next level)
+            string reqData = requestTautologyJSON(responseJSON, variableJSON);
+            request.ContentLength = reqData.Length;
+            //This cookie simulated having logged in with facebook. If you really logged in the web browser would set the FBID to the facebook ID of the user
+            CookieContainer cookies = new CookieContainer(1);
+            cookies.Add(new Cookie("FBID", "Anonymous", "/api", "invgame.azurewebsites.net"));
+            request.CookieContainer = cookies;
+            //Write the request string to the network (basically sends the request to the server)
+            StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
+            requestWriter.Write(reqData);
+            requestWriter.Close();
+            //Read the response from the server (by simulating the Facebook login with the cooke we should not get errors
+            WebResponse webResponse = request.GetResponse();
+            Stream webStream = webResponse.GetResponseStream();
+            StreamReader responseReader = new StreamReader(webStream);
+            //Read the response body (a JSON string) to the response string. This is the string to parse for the level
+            string response = responseReader.ReadToEnd();
+            //Debug.Log(response);
+            responseReader.Close();
+            return response;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("-----------------");
+            Debug.Log(e.Message);
+            return "";
+        }
+    }
+
+    public static string Sim(String exp, string variableJSON)
     {
         try
         {
@@ -73,13 +123,7 @@ public class CallServer : MonoBehaviour
             request.Method = "POST";
             request.ContentType = "application/json";
             string formatter = "{{\"jsonrpc\":\"2.0\",\"method\":\"App.simplifyInv\",\"params\":[{0},{1},[\"Anonymous\",null,\"facebook\"]],\"id\":{2}}}";
-            string InvVal = "{";
-            for (int x = 0; x < TableCreator.cols - 1; x++)
-            {
-                InvVal += "\"" + TableCreator.varArray[0, x].name + "\":\"int\",";
-            }
-            InvVal = InvVal.Substring(0, InvVal.Length - 1);
-            InvVal += '}';
+            string InvVal = variableJSON;
             string buffer = ExpToJS(exp);
             string reqData = string.Format(formatter, buffer, InvVal, requestCounter++);
             request.ContentLength = reqData.Length;
@@ -338,3 +382,4 @@ public class CallServer : MonoBehaviour
         return "\"type\":\"BinaryExpression\",\"operator\":\"" + op + "\",\"left\":{" + arg1 + "},\"right\":{" + arg2 + "}";
     }
 }
+ 

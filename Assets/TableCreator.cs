@@ -16,8 +16,8 @@ public class TableCreator : MonoBehaviour
 
     int[][][] data;
     string[] variables;
-    public static int cols;
-    public static int rows;
+    public  int cols;
+    public  int rows;
     public GameObject canvas;
     public Font font;
     float startX = 250;
@@ -31,10 +31,12 @@ public class TableCreator : MonoBehaviour
     public GameObject panel;
 
     Color variableColor;
-    public static GameObject[,] textArray;
-    public static GameObject[,] varArray;
+    public GameObject[,] textArray;
+    public GameObject[,] varArray;
     GameObject variableText;
     public static string currentJson; //= "{\"id\":68,\"jsonrpc\":\"2.0\",\"result\":{\"LevelNumber\":6,\"ShowQuestionaire\":true,\"data\":[[[1,0,7,0],[2,1,7,1],[3,2,7,3],[4,3,7,6],[5,4,7,10],[6,5,7,15],[7,6,7,21]],[],[]],\"goal\":\"verify\",\"hint\":null,\"id\":\"m - sorin03 - auto\",\"lvlSet\":\"fb\",\"startingInvs\":[],\"typeEnv\":{\"i\":\"int\",\"j\":\"int\",\"n\":\"int\",\"s\":\"int\"},\"variables\":[\"i\",\"j\",\"n\",\"s\"]}}";
+
+    public string variableJSON;
     // Use this for initialization
     void Start()
     {
@@ -219,5 +221,14 @@ public class TableCreator : MonoBehaviour
         }
         canvas.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         canvas.GetComponent<CanvasScaler>().referenceResolution = new Vector2(1440, 2560);
+
+        variableJSON = "{";
+        for (int x = 0; x < cols - 1; x++)
+        {
+            variableJSON += "\"" + varArray[0, x].name + "\":\"int\",";
+        }
+        variableJSON = variableJSON.Substring(0, variableJSON.Length - 1);
+        variableJSON += '}';
+        
     }
 }
