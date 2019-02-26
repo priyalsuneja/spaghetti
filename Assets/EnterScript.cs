@@ -8,6 +8,11 @@ public class EnterScript : MonoBehaviour {
     public GameObject panel;
     public GameObject text;
     public GameObject tableCreator;
+
+    //Chun's tester
+
+
+
     public void Enter()
     {
         var tableCreatorInstance = tableCreator.GetComponent<TableCreator>();
@@ -28,17 +33,33 @@ public class EnterScript : MonoBehaviour {
                 "result": true
             }
 
+            "{\n  \"id\": 1, \n  \"jsonrpc\": \"2.0\", \n  \"result\": true\n}\n"
+
          */
         // new code to call server whenever an invariant is entered
-        JSONParser resultParser = new JSONParser();
         string responseJSON = CallServer.ExpToJS(GetInputExpression.exp);
         responseJSON = CallServer.CallServerOnTautology(responseJSON, tableCreatorInstance.variableJSON);
-        resultParser = new JSONParser(responseJSON);
+
 
         //TODO FIX THIS
+        /*
+         * This search returns the substring between two strings, so 
+            the first index is moved to the character just after the first string.
+            int first = factMessage.IndexOf("methods") + "methods".Length;
+            int last = factMessage.LastIndexOf("methods");
+            string str2 = factMessage.Substring(first, last - first);
+            Console.WriteLine($"Substring between \"methods\" and \"methods\": '{str2}'");
+         */
+        int before = responseJSON.IndexOf("\"result\": ") + "result\": ".Length + 1;
+        int after = responseJSON.IndexOf("\n}");
+        string sampleString = responseJSON.Substring(before, after - before);
+        if (sampleString == "true") {
+            Debug.Log("Tautology, not accepted");
+            return;
+        }
         //if(resultParser.result.result == true) {
-            //TODO input things here: ex. "entered tautology! not accepted"
-            //return;
+        //TODO input things here: ex. "entered tautology! not accepted"
+        //return;
         //}
 
         TableCreator.counter++;
