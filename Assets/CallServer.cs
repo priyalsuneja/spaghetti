@@ -1,41 +1,32 @@
 using System;
-
 using System.IO;
 using System.Net;
 using UnityEngine;
 using Jint.Parser.Ast;
 using System.Collections;
 using System.Collections.Generic;
-
 public class CallServer : MonoBehaviour
 {
-
     // Use this for initialization
     void Start()
     {
         // Debug.Log(requestLevelJSON(1));
-
     }
-
     // Update is called once per frame
     void Update()
     {
-
     }
     private const string URL = "https://invgame.azurewebsites.net/api";
     private const string REQ_LEVEL_DATA =
         "{{\"jsonrpc\":\"2.0\",\"method\":\"App.loadNextLvlAnonymous\",\"params\":[\"Anonymous\",[\"Anonymous\",null,\"facebook\"],{0}, false],\"id\":{1}}}";
     private static int requestCounter = 0;
-
     //Start request from level 1 (there are 62 levels in the server. When asked for an higher level the result will be null
     private static int requestedLevel = 1;
-
     //This function changes the request json string to request the level number in parameter
     private static string requestLevelJSON(int level)
     {
         return string.Format(REQ_LEVEL_DATA, level, requestCounter++);
     }
-
     //Function that call the server (you may want to change it to return the json string received instead to output it to the debug log
     public static string ExecuteServerCall()
     {
@@ -56,7 +47,6 @@ public class CallServer : MonoBehaviour
             StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
             requestWriter.Write(reqData);
             requestWriter.Close();
-
             //Read the response from the server (by simulating the Facebook login with the cooke we should not get errors
             WebResponse webResponse = request.GetResponse();
             Stream webStream = webResponse.GetResponseStream();
@@ -86,7 +76,6 @@ public class CallServer : MonoBehaviour
             string InvVal = "{";
             for (int x = 0; x < TableCreator.cols - 1; x++)
             {
-
                 InvVal += "\"" + TableCreator.varArray[0, x].name + "\":\"int\",";
             }
             InvVal = InvVal.Substring(0, InvVal.Length - 1);
@@ -102,7 +91,6 @@ public class CallServer : MonoBehaviour
             StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
             requestWriter.Write(reqData);
             requestWriter.Close();
-
             //Read the response from the server (by simulating the Facebook login with the cooke we should not get errors
             WebResponse webResponse = request.GetResponse();
             Stream webStream = webResponse.GetResponseStream();
@@ -143,7 +131,6 @@ public class CallServer : MonoBehaviour
             else if (expr.Expression is Literal)
             {
                 buffer = visitLiteral(expr.Expression as Literal);
-
             }
             else if (expr.Expression is Identifier)
             {
@@ -152,23 +139,19 @@ public class CallServer : MonoBehaviour
         }
         buffer = "{\"type\":\"Program\",\"body\":[{\"type\":\"ExpressionStatement\",\"expression\":{" + buffer + "}}],\"sourceType\":\"script\"}";
         return buffer;
-
     }
-
     private static string visitIdentifier(Identifier expr)
     {
         string buffer = "";
         buffer = "\"type\":\"Identifier\",\"name\":\"" + expr.Name + "\"";
         return buffer;
     }
-
     private static string visitLiteral(Literal expr)
     {
         string buffer = "";
         buffer = "\"type\":\"Literal\",\"value\":" + expr.Value + ",\"raw\":\"" + expr.Raw + "\"";
         return buffer;
     }
-
     private static string visitUnary(UnaryExpression expr)
     {
         string buffer = "";
@@ -187,7 +170,6 @@ public class CallServer : MonoBehaviour
         else if (expr.Argument is Literal)
         {
             buffer = visitLiteral(expr.Argument as Literal);
-
         }
         else if (expr.Argument is Identifier)
         {
@@ -206,10 +188,9 @@ public class CallServer : MonoBehaviour
         {
             op = "!";
         }
-        buffer = "\"type\":\"UnaryExpression\",\"operator\":\"" + expr.Operator + "\",\"argument\":{\"" + buffer + "},\"prefix\":" + expr.Prefix;
+        buffer = "\"type\":\"UnaryExpression\",\"operator\":\"" + op + "\",\"argument\":{" + buffer + "},\"prefix\":" + expr.Prefix.ToString().ToLower();
         return buffer;
     }
-
     private static string visitLogical(LogicalExpression expr)
     {
         string arg1 = "";
@@ -263,9 +244,8 @@ public class CallServer : MonoBehaviour
         {
             op = "||";
         }
-        return "\"type\":\"LogicalExpression\",\"operator\":\"" + expr.Operator + "\",\"left\":{" + arg1 + "},\"right\":{" + arg2 + "}";
+        return "\"type\":\"LogicalExpression\",\"operator\":\"" + op + "\",\"left\":{" + arg1 + "},\"right\":{" + arg2 + "}";
     }
-
     private static string visitBinary(BinaryExpression expr)
     {
         string arg1 = "";
@@ -357,5 +337,4 @@ public class CallServer : MonoBehaviour
         }
         return "\"type\":\"BinaryExpression\",\"operator\":\"" + op + "\",\"left\":{" + arg1 + "},\"right\":{" + arg2 + "}";
     }
-
 }
