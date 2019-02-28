@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class CallServer : MonoBehaviour
 {
-    
+
     // Use this for initialization
     void Start()
     {
@@ -34,7 +34,7 @@ public class CallServer : MonoBehaviour
     {
         return string.Format(REQ_TAUTOLOGY_DATA, insertJSON, variablesJSON, requestCounter++);
     }
-    
+
     //Function that call the server (you may want to change it to return the json string received instead to output it to the debug log
     public static string ExecuteServerCall()
     {
@@ -114,6 +114,23 @@ public class CallServer : MonoBehaviour
         }
     }
 
+    /*
+     * {\n    \"body\": [\n      {\n        \"expression\": {\n          \"raw\": \"true\", \n          \"type\": \"Literal\", \n          \"value\": true\n        }, \n        \"type\": \"ExpressionStatement\"\n      }\n    ], \n    \"sourceType\": \"script\", \n    \"type\": \"Program\"\n  }\n}
+     * {"type":"Program","body":[{"type":"ExpressionStatement","expression":{"type":"BinaryExpression","operator":"==","left":{"type":"Literal","value":1,"raw":"1"},"right":{"type":"Literal","value":1,"raw":"1"}}}],"sourceType":"script"}
+         */
+    public static string ToSimplify(String exp)
+    {
+        // replace whitespace and newlines with nothing
+        exp = exp.Replace(" ", "");
+        exp = exp.Replace("\n", "");
+
+        int before = exp.IndexOf("\"result\":") + "result\":".Length + 1;
+
+        string sampleString = exp.Substring(before, exp.Length - 1 - before);
+
+        return sampleString;
+    }
+
     public static string Sim(String exp, string variableJSON)
     {
         try
@@ -150,6 +167,56 @@ public class CallServer : MonoBehaviour
             Debug.Log("-----------------");
             Debug.Log(e.Message);
             return "";
+        }
+    }
+    public static bool Implied(String exp, LinkedList<String> Inv, String InvJS)
+    {
+        try
+        {
+            //Creates the HTTP request
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            //Get the proper JSON string for the request (every time you call this method it will ask for the next level)
+            String Arg0="";
+            foreach(String S in Inv)
+            {
+                Arg0 += S + ",";
+            }
+            Arg0 = Arg0.Substring(0, Arg0.Length - 1);
+            String formatter = "{{\"jsonrpc\":\"2.0\",\"method\":\"App.impliedPairs\",\"params\":[[{0}],[{1}],{2},[\"Anonymous\",null,\"facebook\"]],\"id\":{3}}}";
+            string reqData = string.Format(formatter, Arg0, exp, InvJS, requestCounter++);
+            request.ContentLength = reqData.Length;
+            //This cookie simulated having logged in with facebook. If you really logged in the web browser would set the FBID to the facebook ID of the user
+            CookieContainer cookies = new CookieContainer(1);
+            cookies.Add(new Cookie("FBID", "Anonymous", "/api", "invgame.azurewebsites.net"));
+            request.CookieContainer = cookies;
+            //Write the request string to the network (basically sends the request to the server)
+            StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
+            requestWriter.Write(reqData);
+            requestWriter.Close();
+            //Read the response from the server (by simulating the Facebook login with the cooke we should not get errors
+            WebResponse webResponse = request.GetResponse();
+            Stream webStream = webResponse.GetResponseStream();
+            StreamReader responseReader = new StreamReader(webStream);
+            //Read the response body (a JSON string) to the response string. This is the string to parse for the level
+            string response = responseReader.ReadToEnd();
+            //Debug.Log(response);
+            responseReader.Close();
+            if(ToSimplify(response) != "[]")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("-----------------");
+            Debug.Log(e.Message);
+            return true;
         }
     }
     public static string ExpToJS(String exp)

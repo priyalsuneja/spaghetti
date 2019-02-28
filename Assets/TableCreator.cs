@@ -16,6 +16,7 @@ public class TableCreator : MonoBehaviour
 
     int[][][] data;
     string[] variables;
+    public LinkedList<string> acceptedInv = new LinkedList<string>();
     public  int cols;
     public  int rows;
     public GameObject canvas;

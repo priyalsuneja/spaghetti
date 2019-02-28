@@ -27,29 +27,14 @@ public class EnterScript : MonoBehaviour {
         }
         /*
          * looks like this:
-         * {
-                "id": 1, 
-                "jsonrpc": "2.0", 
-                "result": true
-            }
-
-            "{\n  \"id\": 1, \n  \"jsonrpc\": \"2.0\", \n  \"result\": true\n}\n"
-
+         *   "{\n  \"id\": 1, \n  \"jsonrpc\": \"2.0\", \n  \"result\": true\n}\n"
          */
         // new code to call server whenever an invariant is entered
-        string responseJSON = CallServer.ExpToJS(GetInputExpression.exp);
-        responseJSON = CallServer.CallServerOnTautology(responseJSON, tableCreatorInstance.variableJSON);
+        //string responseJSON = CallServer.ExpToJS(GetInputExpression.exp);
+        string responseJSONS = CallServer.Sim(GetInputExpression.exp, tableCreatorInstance.variableJSON);
+        responseJSONS = CallServer.ToSimplify(responseJSONS);
+        string responseJSON = CallServer.CallServerOnTautology(responseJSONS, tableCreatorInstance.variableJSON);
 
-
-        //TODO FIX THIS
-        /*
-         * This search returns the substring between two strings, so 
-            the first index is moved to the character just after the first string.
-            int first = factMessage.IndexOf("methods") + "methods".Length;
-            int last = factMessage.LastIndexOf("methods");
-            string str2 = factMessage.Substring(first, last - first);
-            Console.WriteLine($"Substring between \"methods\" and \"methods\": '{str2}'");
-         */
         int before = responseJSON.IndexOf("\"result\": ") + "result\": ".Length + 1;
         int after = responseJSON.IndexOf("\n}");
         string sampleString = responseJSON.Substring(before, after - before);
@@ -57,10 +42,15 @@ public class EnterScript : MonoBehaviour {
             Debug.Log("Tautology, not accepted");
             return;
         }
-        //if(resultParser.result.result == true) {
-        //TODO input things here: ex. "entered tautology! not accepted"
-        //return;
-        //}
+        if(tableCreatorInstance.acceptedInv.Count > 0)
+        {
+            if(CallServer.Implied(responseJSONS, tableCreatorInstance.acceptedInv, tableCreatorInstance.variableJSON) == true)
+            {
+                Debug.Log("Implied statement, not accepted");
+                return;
+            }
+        }
+        tableCreatorInstance.acceptedInv.AddLast(responseJSONS);
 
         TableCreator.counter++;
         TableCreator.score++;
