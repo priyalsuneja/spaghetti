@@ -8,6 +8,7 @@ public class EnterScript : MonoBehaviour {
     public GameObject panel;
     public GameObject text;
     public GameObject tableCreator;
+    public GameObject feedbackBox;
 
     //Chun's tester
 
@@ -40,6 +41,7 @@ public class EnterScript : MonoBehaviour {
         string sampleString = responseJSON.Substring(before, after - before);
         if (sampleString == "true") {
             Debug.Log("Tautology, not accepted");
+            feedbackBox.GetComponent<Text>().text = "Tautology not accepted. Try again!";
             return;
         }
         if(tableCreatorInstance.acceptedInv.Count > 0)
@@ -47,11 +49,13 @@ public class EnterScript : MonoBehaviour {
             if(CallServer.Implied(responseJSONS, tableCreatorInstance.acceptedInv, tableCreatorInstance.variableJSON) == true)
             {
                 Debug.Log("Implied statement, not accepted");
+                feedbackBox.GetComponent<Text>().text = "Implied statement not accepted. Try again!";
                 return;
             }
         }
         tableCreatorInstance.acceptedInv.AddLast(responseJSONS);
 
+        feedbackBox.GetComponent<Text>().text = "Invariant accepted. Nice work!";
         TableCreator.counter++;
         TableCreator.score++;
         text = panel.transform.Find("Text (1)").gameObject;
