@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class NextLevel : MonoBehaviour
 {
     //public static int level = 1;
-    public void ChangeLevel()
+    public void ChangeSingleLevel()
     {
         //if (level == 1)
         //{
@@ -18,7 +18,15 @@ public class NextLevel : MonoBehaviour
         //}
         TableCreator.counter = 0;
         TableCreator.score = 0;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("SinglePlayer");
+    }
+
+    public void ChangeMultiLevel()
+    {
+        TableCreator.currentJson = CallServer.ExecuteServerCall();
+        TableCreator.counter = 0;
+        TableCreator.score = 0;
+        SceneManager.LoadScene("Multiplayer");
     }
 
     public void OpenMainMenu()

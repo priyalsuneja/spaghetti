@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Jint;
 
-public class EnterScript : MonoBehaviour {
+public class EnterScript : MonoBehaviour
+{
     public GameObject panel;
     public GameObject text;
     public GameObject tableCreator;
@@ -18,9 +19,9 @@ public class EnterScript : MonoBehaviour {
     {
         var tableCreatorInstance = tableCreator.GetComponent<TableCreator>();
         Debug.Log("Entered");
-        for(int i = 0; i < tableCreatorInstance.rows; i++)
+        for (int i = 0; i < tableCreatorInstance.rows; i++)
         {
-            if(tableCreatorInstance.textArray[i, tableCreatorInstance.cols - 1].GetComponent<Text>().text != "True")
+            if (tableCreatorInstance.textArray[i, tableCreatorInstance.cols - 1].GetComponent<Text>().text != "True")
             {
                 Debug.Log("returning");
                 return;
@@ -39,14 +40,15 @@ public class EnterScript : MonoBehaviour {
         int before = responseJSON.IndexOf("\"result\": ") + "result\": ".Length + 1;
         int after = responseJSON.IndexOf("\n}");
         string sampleString = responseJSON.Substring(before, after - before);
-        if (sampleString == "true") {
+        if (sampleString == "true")
+        {
             Debug.Log("Tautology, not accepted");
             feedbackBox.GetComponent<Text>().text = "Tautology not accepted. Try again!";
             return;
         }
-        if(tableCreatorInstance.acceptedInv.Count > 0)
+        if (tableCreatorInstance.acceptedInv.Count > 0)
         {
-            if(CallServer.Implied(responseJSONS, tableCreatorInstance.acceptedInv, tableCreatorInstance.variableJSON) == true)
+            if (CallServer.Implied(responseJSONS, tableCreatorInstance.acceptedInv, tableCreatorInstance.variableJSON) == true)
             {
                 Debug.Log("Implied statement, not accepted");
                 feedbackBox.GetComponent<Text>().text = "Implied statement not accepted. Try again!";
@@ -58,6 +60,7 @@ public class EnterScript : MonoBehaviour {
         feedbackBox.GetComponent<Text>().text = "Invariant accepted. Nice work!";
         TableCreator.counter++;
         TableCreator.score++;
+        TableCreator.startTime = Time.time;
         text = panel.transform.Find("Text (1)").gameObject;
         text.GetComponent<Text>().text += GetInputExpression.exp + '\n';
         Debug.Log(TableCreator.counter);

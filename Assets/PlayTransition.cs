@@ -3,8 +3,13 @@ using UnityEngine.SceneManagement;
  
 public class PlayTransition : MonoBehaviour
 {
-    public void NextScene()
+    public void RunSinglePlayer()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("SinglePlayer");
+    }
+
+    public void RunMultiPlayer()
+    {
+        SceneManager.LoadScene("Multiplayer");
     }
 }

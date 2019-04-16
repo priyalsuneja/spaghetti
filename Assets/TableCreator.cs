@@ -17,8 +17,9 @@ public class TableCreator : MonoBehaviour
     int[][][] data;
     string[] variables;
     public LinkedList<string> acceptedInv = new LinkedList<string>();
-    public  int cols;
-    public  int rows;
+    public int cols;
+    public int rows;
+    public static float startTime;
     public GameObject canvas;
     public Font font;
     float startX = 250;
@@ -43,6 +44,7 @@ public class TableCreator : MonoBehaviour
     {
         currentJson = CallServer.ExecuteServerCall();
         json = new JSONParser(currentJson);
+        startTime = Time.time;
         LoadTable(json);
     }
 
@@ -50,13 +52,23 @@ public class TableCreator : MonoBehaviour
     void Update()
     {
         //Debug.Log("Counter from Table: " +counter);
-        if (counter == 3) {
-            
-            
-            //ClearTable();
-            displayScore();
-
+        //SinglePlayer case
+        
+        if (SceneManager.Equals(SceneManager.GetActiveScene(), "SinglePlayer"))
+        {
+            if (counter == 3)
+            {
+                displaySingleScore();
+            }
         }
+        else
+        {
+            if (Time.time - startTime > 15)
+            {
+                displayMultiScore();
+            }
+        }
+
 
         for (int i = 0; i < rows; i++)
         {
@@ -79,19 +91,30 @@ public class TableCreator : MonoBehaviour
                     //Debug.Log(GetInputExpression.exp);
                     engine.Execute(GetInputExpression.exp);
                     //Debug.Log(engine.GetCompletionValue().ToObject());
-                    textArray[i, cols - 1].GetComponent<Text>().text = engine.GetCompletionValue().ToObject().ToString();
+                    textArray[i, cols - 1].GetComponent<Text>().text = (engine.GetCompletionValue().ToObject()).ToString();
+                    float test = 0;
+                    if (float.TryParse(textArray[i, cols - 1].GetComponent<Text>().text, out test))
+                    {
+                        textArray[i, cols - 1].GetComponent<Text>().text = test.ToString("G4");
+                    }
+
                 }
             }
             catch (Exception err)
             {
-             //  Debug.Log(err.Message);
+                //  Debug.Log(err.Message);
             }
         }
     }
 
-    void displayScore()
+    void displaySingleScore()
     {
-        SceneManager.LoadScene("DisplayScore");
+        SceneManager.LoadScene("SingleScore");
+    }
+
+    void displayMultiScore()
+    {
+        SceneManager.LoadScene("MultiScore");
     }
 
     void ClearTable()
@@ -100,8 +123,10 @@ public class TableCreator : MonoBehaviour
         {
             Destroy(varArray[0, i]);
         }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
                 Destroy(textArray[i, j]);
             }
         }
@@ -130,8 +155,8 @@ public class TableCreator : MonoBehaviour
         float xDelta = startX + (xDiff * (cols)) / 2;
         //Debug.Log("X" + xDelta);
         float yDelta = (yDiff * (rows + 1)) / 2;
-       //Debug.Log("Y" + yDelta);
-        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(xDelta*2, yDelta*2);
+        //Debug.Log("Y" + yDelta);
+        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(xDelta * 2, yDelta * 2);
         startY = panel.GetComponent<RectTransform>().rect.height;
         panel.name = "Table Panel";
         panel.transform.position = canvas.GetComponent<RectTransform>().position;
@@ -140,22 +165,42 @@ public class TableCreator : MonoBehaviour
         // making variables and variable buttons
         for (int i = 0; i < variables.Length; i++)
         {
+            Color normalColor = new Color(0.144f, 0.147f, 0.173f, 1);
+            Color pressedColor = new Color(0.224f, 0.235f, 0.274f, 1);
             GameObject newObj = new GameObject();
+            GameObject textObj = new GameObject();
             newObj.transform.SetParent(panel.transform);
             newObj.name = variables[i];
             newObj.AddComponent<RectTransform>();
-            newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
+            newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 225);
+            textObj.AddComponent<RectTransform>();
+            textObj.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 225);
             Button varButton = newObj.AddComponent<Button>();
+            Image buttonImage = newObj.AddComponent<Image>();
+            buttonImage.color = new Color(1f, 1f, 1f, 1f);
+            buttonImage.sprite = Resources.Load<Sprite>("unity_builtin_extra/UISprite");
+            varButton.image = buttonImage;
+            ColorBlock cb = varButton.colors;
+            cb.normalColor = normalColor;
+            cb.pressedColor = pressedColor;
+            cb.highlightedColor = normalColor;
+            cb.colorMultiplier = 1;
+            cb.fadeDuration = 0.1f;
+            varButton.colors = cb;
             varButton.onClick.AddListener(buttonAppend.ButtonTrigger);
             textArray[0, i] = newObj;
             varArray[0, i] = newObj;
-            Text myText = newObj.AddComponent<Text>();
+            textObj.transform.SetParent(newObj.transform);
+            Text myText = textObj.AddComponent<Text>();
             myText.text = variables[i];
             myText.fontSize = 91;
             myText.font = font;
             myText.alignment = TextAnchor.MiddleCenter;
             myText.color = Color.gray;//variableColor;
-            textArray[0, i].transform.localPosition = new Vector3(startX + (xDiff * i)-xDelta, startY + yDiff-yDelta, 0);
+            textArray[0, i].transform.localPosition = new Vector3(startX + (xDiff * i) - xDelta, startY + yDiff - yDelta, 0);
+            Navigation customNav = new Navigation();
+            customNav.mode = Navigation.Mode.Automatic;
+            varButton.navigation = customNav;
         }
 
         // results
@@ -163,7 +208,7 @@ public class TableCreator : MonoBehaviour
         obj.transform.SetParent(panel.transform);
         obj.name = "result";
         obj.AddComponent<RectTransform>();
-        obj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
+        obj.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 225);
         textArray[0, variables.Length] = obj;
         varArray[0, variables.Length] = obj;
         Text text = obj.AddComponent<Text>();
@@ -172,7 +217,7 @@ public class TableCreator : MonoBehaviour
         text.font = font;
         text.color = Color.gray;// variableColor;
         text.alignment = TextAnchor.MiddleCenter;
-        textArray[0, variables.Length].transform.localPosition = new Vector3(startX + (xDiff * variables.Length)-xDelta, startY + yDiff-yDelta, 0);
+        textArray[0, variables.Length].transform.localPosition = new Vector3(startX + (xDiff * variables.Length) - xDelta, startY + yDiff - yDelta, 0);
 
         // creating table
         for (int i = 0; i < rows; i++)
@@ -183,7 +228,7 @@ public class TableCreator : MonoBehaviour
                 newObj.transform.SetParent(panel.transform);
                 newObj.name = "(" + i + ", " + j + ")";
                 newObj.AddComponent<RectTransform>();
-                newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(225, 225);
+                newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 225);
                 textArray[i, j] = newObj;
                 Text myText = newObj.AddComponent<Text>();
                 if (j == cols - 1)
@@ -202,7 +247,7 @@ public class TableCreator : MonoBehaviour
                         //Debug.Log(GetInputExpression.exp);
                         engine.Execute(GetInputExpression.exp);
 
-                        myText.text = engine.GetCompletionValue().ToObject().ToString();
+                        myText.text = ((double)engine.GetCompletionValue().ToObject()).ToString("G4");
                     }
                     catch (Exception err)
                     {
@@ -217,7 +262,7 @@ public class TableCreator : MonoBehaviour
                 myText.fontSize = 91;
                 myText.font = font;
                 myText.alignment = TextAnchor.MiddleCenter;
-                textArray[i, j].transform.localPosition = new Vector3(startX + (xDiff * j)-xDelta, startY - (yDiff * i)-yDelta, 0);
+                textArray[i, j].transform.localPosition = new Vector3(startX + (xDiff * j) - xDelta, startY - (yDiff * i) - yDelta, 0);
             }
         }
         canvas.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -230,6 +275,6 @@ public class TableCreator : MonoBehaviour
         }
         variableJSON = variableJSON.Substring(0, variableJSON.Length - 1);
         variableJSON += '}';
-        
+
     }
 }
