@@ -12,4 +12,9 @@ public class PlayTransition : MonoBehaviour
     {
         SceneManager.LoadScene("Multiplayer");
     }
+
+    public void RunMultiLobby()
+    {
+        SceneManager.LoadScene("MultiLobby");
+    }
 }
