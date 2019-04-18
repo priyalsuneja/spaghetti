@@ -53,8 +53,8 @@ public class TableCreator : MonoBehaviour
     {
         //Debug.Log("Counter from Table: " +counter);
         //SinglePlayer case
-        
-        if (SceneManager.Equals(SceneManager.GetActiveScene(), "SinglePlayer"))
+
+        /*if (SceneManager.Equals(SceneManager.GetActiveScene(), "SinglePlayer"))
         {
             if (counter == 3)
             {
@@ -67,8 +67,19 @@ public class TableCreator : MonoBehaviour
             {
                 displayMultiScore();
             }
-        }
+        }*/
 
+        if (counter == 3)
+        {
+            if (SceneManager.Equals(SceneManager.GetActiveScene(), "SinglePlayer"))
+            {
+                displaySingleScore();
+            }
+            else
+            {
+                displayMultiScore();
+            }
+        }
 
         for (int i = 0; i < rows; i++)
         {

@@ -444,7 +444,7 @@ public class CallServer : MonoBehaviour
         }
         else if (expr.Operator.ToString() == "NotEqual")
         {
-            op = "!=";
+            op = "!==";
         }
         return "\"type\":\"BinaryExpression\",\"operator\":\"" + op + "\",\"left\":{" + arg1 + "},\"right\":{" + arg2 + "}";
     }
