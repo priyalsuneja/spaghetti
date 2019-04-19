@@ -69,7 +69,7 @@ public class TableCreator : MonoBehaviour
             }
         }*/
 
-        if (counter == 3)
+        if (Time.time - startTime > 30)
         {
             if (SceneManager.Equals(SceneManager.GetActiveScene(), "SinglePlayer"))
             {

@@ -13,6 +13,6 @@ public class Timebar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(101.39f * (1 - (Time.time - TableCreator.startTime) / 15.0f), 63.7f);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(101.39f * (1 - (Time.time - TableCreator.startTime) / 30.0f), 63.7f);
     }
 }
