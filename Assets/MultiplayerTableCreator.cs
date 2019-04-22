@@ -8,7 +8,7 @@ using Jint;
 using UnityEngine.SceneManagement;
 
 
-public class TableCreator : MonoBehaviour
+public class MultiplayerTableCreator : MonoBehaviour
 {
     JSONParser json;
     public static int counter = 0;
@@ -71,8 +71,8 @@ public class TableCreator : MonoBehaviour
 
         if (Time.time - startTime > 30)
         {
-                displaySingleScore();
-  
+           
+                displayMultiScore();
         }
 
         for (int i = 0; i < rows; i++)
@@ -112,11 +112,10 @@ public class TableCreator : MonoBehaviour
         }
     }
 
-    void displaySingleScore()
+    void displayMultiScore()
     {
-        SceneManager.LoadScene("SingleScore");
+        SceneManager.LoadScene("MultiScore");
     }
-
 
     void ClearTable()
     {
