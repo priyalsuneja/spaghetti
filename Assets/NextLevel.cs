@@ -31,6 +31,6 @@ public class NextLevel : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("StartMenu");
     }
 }
